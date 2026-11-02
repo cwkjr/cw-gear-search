@@ -1,0 +1,316 @@
+<title>腕輪キャラ検索</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+/* レイアウト: 上に操作部(モード切替+選択肢)、下にキャラカードの2列グリッド。属性選択時だけ腕輪ヘッダーを出す */
+:root {
+  --bg: #eef1f5;
+  --surface: #ffffff;
+  --fg: #1d2530;
+  --muted: #667284;
+  --line: #d5dbe4;
+  --accent: #2c5d8f;
+  --accent-fg: #ffffff;
+  --chip: #e1e7ef;
+  --tag2: #4f8fc0;
+  --tag2-fg: #ffffff;
+  --tag1: #dbe7f2;
+  --tag1-fg: #35516b;
+  --hit: #f2b233;
+  --hit-fg: #3a2800;
+  --img-bg: #f4e9d8;
+  --font: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131a23; --surface: #1c2531; --fg: #e8edf3; --muted: #93a0b2; --line: #2e3a4a;
+    --accent: #6aa6da; --accent-fg: #0e1822; --chip: #263242;
+    --tag2: #3f7aa8; --tag2-fg: #f2f7fb; --tag1: #2a3a4d; --tag1-fg: #b9cde0;
+    --hit: #e8a825; --hit-fg: #2b1d00; --img-bg: #efe3d0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131a23; --surface: #1c2531; --fg: #e8edf3; --muted: #93a0b2; --line: #2e3a4a;
+  --accent: #6aa6da; --accent-fg: #0e1822; --chip: #263242;
+  --tag2: #3f7aa8; --tag2-fg: #f2f7fb; --tag1: #2a3a4d; --tag1-fg: #b9cde0;
+  --hit: #e8a825; --hit-fg: #2b1d00; --img-bg: #efe3d0;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 18px 40px;
+}
+.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+h1 { margin: 0; font-size: 22px; font-weight: 900; letter-spacing: .02em; }
+.sub { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; background: var(--chip); border-radius: 12px; }
+.seg button {
+  font: inherit; font-weight: 700; font-size: 15px; padding: 11px 8px; border: 0; border-radius: 9px;
+  background: transparent; color: var(--muted); cursor: pointer; min-height: 44px;
+}
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
+
+.panel { display: flex; flex-direction: column; gap: 12px; }
+.group-title { margin: 0 0 6px; font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .08em; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: inherit; font-size: 14px; font-weight: 500; padding: 8px 12px; min-height: 40px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.chip .n { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 700; }
+.chip[aria-pressed="true"] .n { color: inherit; opacity: .8; }
+.chip.empty { opacity: .55; }
+button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
+
+.tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; min-height: 40px; }
+.toggle input { width: 20px; height: 20px; accent-color: var(--accent); }
+.clear { font: inherit; font-size: 14px; background: none; border: 0; color: var(--accent); font-weight: 700; padding: 8px; cursor: pointer; min-height: 40px; }
+
+.head {
+  display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 14px; padding: 12px;
+}
+.head .br { width: 112px; flex: none; aspect-ratio: 270/204; border-radius: 10px; background: var(--img-bg); overflow: hidden; display: grid; place-items: center; }
+.head .br img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.head .br span { font-size: 11px; color: #7a6a52; text-align: center; padding: 4px; }
+.head h2 { margin: 0; font-size: 20px; font-weight: 900; }
+.head p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.head .hits { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.note { margin: 0; padding: 22px 16px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 14px; font-size: 14px; }
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; list-style: none; margin: 0; padding: 0; }
+@media (min-width: 560px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 720px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.card .pic { aspect-ratio: 1; border-radius: 10px; background: var(--img-bg); overflow: hidden; }
+.card .pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card .who { margin: 0; font-size: 12px; color: var(--muted); padding: 0 2px; }
+.tags { display: flex; flex-direction: column; gap: 4px; margin-top: auto; }
+.tag {
+  display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 7px;
+  font-size: 13px; font-weight: 500; background: var(--tag1); color: var(--tag1-fg); min-width: 0;
+}
+.tag .r { font-size: 14px; flex: none; }
+.tag.r2 { background: var(--tag2); color: var(--tag2-fg); }
+.tag.hit { background: var(--hit); color: var(--hit-fg); font-weight: 700; }
+.tag.none { background: transparent; color: var(--muted); border: 1px dashed var(--line); justify-content: center; }
+.head .tag { display: inline-flex; padding: 3px 9px; }
+.count { margin: 0; font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .chip, .seg button { transition: background .12s, color .12s; } }
+</style>
+
+<main class="wrap">
+  <header>
+    <h1>腕輪キャラ検索</h1>
+    <p class="sub">属性か特性のどちらかで絞り込みます</p>
+  </header>
+
+  <div class="seg" role="group" aria-label="絞り込みの方法">
+    <button type="button" id="mode-attr" aria-pressed="true">属性で絞る</button>
+    <button type="button" id="mode-trait" aria-pressed="false">特性で絞る</button>
+  </div>
+
+  <section class="panel" id="panel" aria-live="polite"></section>
+  <section id="result" class="panel"></section>
+</main>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  var DATA = window.GEAR_DATA || [];
+  var RANK = { 2: '◎', 1: '◯' };
+  var ORDER = ['剣','双剣','大剣','刀','槍','盾槍','盾剣','斧','槌','弓','大砲','双砲','爆弾','爪','腕甲','攻撃魔法','回復','塩パン','チケ','お金'];
+  var GROUPS = [
+    { title: '対〇〇', test: function (n) { return n.indexOf('対') === 0; } },
+    { title: '武器・装備', test: function (n) { return ['剣','双剣','大剣','刀','槍','盾槍','盾剣','斧','槌','弓','大砲','双砲','爆弾','爪','腕甲'].indexOf(n) >= 0; } },
+    { title: '魔法・回復', test: function (n) { return n === '攻撃魔法' || n === '回復'; } },
+    { title: 'その他', test: function () { return true; } }
+  ];
+
+  var state = { mode: 'attr', attr: 'all', traits: [], only2: false };
+  var all = [];
+  DATA.forEach(function (a) { a.characters.forEach(function (c) { all.push({ attr: a, ch: c }); }); });
+
+  var $ = function (id) { return document.getElementById(id); };
+  var panel = $('panel'), result = $('result');
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function traitCount(name) {
+    return all.filter(function (x) { return hasTrait(x.ch, name); }).length;
+  }
+  function hasTrait(ch, name) {
+    return ch.traits.some(function (t) { return t[0] === name && (!state.only2 || t[1] === 2); });
+  }
+  function allTraitNames() {
+    var seen = {};
+    all.forEach(function (x) { x.ch.traits.forEach(function (t) { seen[t[0]] = 1; }); });
+    var names = Object.keys(seen);
+    var taisort = names.filter(function (n) { return n.indexOf('対') === 0; }).sort();
+    var rest = names.filter(function (n) { return n.indexOf('対') !== 0; });
+    rest.sort(function (a, b) {
+      var ia = ORDER.indexOf(a), ib = ORDER.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+    return taisort.concat(rest);
+  }
+
+  function chip(label, count, pressed, onClick, empty) {
+    var b = el('button', 'chip' + (empty ? ' empty' : ''));
+    b.type = 'button';
+    b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    b.appendChild(document.createTextNode(label));
+    if (count != null) b.appendChild(el('span', 'n', String(count)));
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function renderPanel() {
+    panel.textContent = '';
+    if (state.mode === 'attr') {
+      var chips = el('div', 'chips');
+      chips.appendChild(chip('すべて', all.length, state.attr === 'all', function () { state.attr = 'all'; render(); }));
+      DATA.forEach(function (a) {
+        chips.appendChild(chip(a.name, a.characters.length, state.attr === a.id, function () { state.attr = a.id; render(); }, a.characters.length === 0));
+      });
+      panel.appendChild(chips);
+      return;
+    }
+    var names = allTraitNames();
+    GROUPS.forEach(function (g, gi) {
+      var list = names.filter(function (n) {
+        for (var i = 0; i < gi; i++) if (GROUPS[i].test(n)) return false;
+        return g.test(n);
+      });
+      if (!list.length) return;
+      var box = el('div');
+      box.appendChild(el('h3', 'group-title', g.title));
+      var chips = el('div', 'chips');
+      list.forEach(function (n) {
+        var on = state.traits.indexOf(n) >= 0;
+        chips.appendChild(chip(n, traitCount(n), on, function () {
+          state.traits = on ? state.traits.filter(function (t) { return t !== n; }) : state.traits.concat(n);
+          render();
+        }));
+      });
+      box.appendChild(chips);
+      panel.appendChild(box);
+    });
+    var tools = el('div', 'tools');
+    var lab = el('label', 'toggle');
+    var cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.id = 'only2'; cb.checked = state.only2;
+    cb.addEventListener('change', function () { state.only2 = cb.checked; render(); });
+    lab.appendChild(cb); lab.appendChild(document.createTextNode('◎のものだけ'));
+    tools.appendChild(lab);
+    if (state.traits.length) {
+      var cl = el('button', 'clear', '選択をクリア');
+      cl.type = 'button';
+      cl.addEventListener('click', function () { state.traits = []; render(); });
+      tools.appendChild(cl);
+    }
+    panel.appendChild(tools);
+  }
+
+  function tagEl(t, hit) {
+    var s = el('span', 'tag r' + t[1] + (hit ? ' hit' : ''));
+    s.appendChild(el('span', null, t[0]));
+    s.appendChild(el('span', 'r', RANK[t[1]]));
+    return s;
+  }
+
+  function card(x, hits) {
+    var li = el('li', 'card');
+    var pic = el('div', 'pic');
+    var img = document.createElement('img');
+    img.src = x.ch.img; img.alt = x.attr.name + 'のキャラ'; img.loading = 'lazy';
+    pic.appendChild(img);
+    li.appendChild(pic);
+    li.appendChild(el('p', 'who', x.attr.name));
+    var tags = el('div', 'tags');
+    if (!x.ch.traits.length) tags.appendChild(el('span', 'tag none', '特性なし'));
+    x.ch.traits.forEach(function (t) {
+      tags.appendChild(tagEl(t, hits.indexOf(t[0]) >= 0 && (!state.only2 || t[1] === 2)));
+    });
+    li.appendChild(tags);
+    return li;
+  }
+
+  function renderResult() {
+    result.textContent = '';
+    var list = [], hits = [];
+
+    if (state.mode === 'attr') {
+      var a = DATA.filter(function (d) { return d.id === state.attr; })[0];
+      if (a) {
+        list = a.characters.map(function (c) { return { attr: a, ch: c }; });
+        var head = el('div', 'head');
+        var br = el('div', 'br');
+        if (a.bracelet) {
+          var bi = document.createElement('img');
+          bi.src = a.bracelet; bi.alt = a.name + '用の腕輪';
+          br.appendChild(bi);
+        } else br.appendChild(el('span', null, '腕輪の画像はまだありません'));
+        head.appendChild(br);
+        var tx = el('div');
+        tx.appendChild(el('h2', null, a.name + '用の腕輪'));
+        tx.appendChild(el('p', null, list.length + '人'));
+        head.appendChild(tx);
+        result.appendChild(head);
+      } else {
+        list = all;
+        result.appendChild(el('p', 'count', 'すべてのキャラ ' + list.length + '人'));
+      }
+      if (!list.length) result.appendChild(el('p', 'note', 'この属性のキャラはまだ登録されていません。'));
+    } else {
+      hits = state.traits.slice();
+      if (!hits.length) {
+        result.appendChild(el('p', 'note', '上の特性を選ぶと、その特性を持つキャラが全属性から出ます。複数選ぶと、すべて持っているキャラだけに絞ります。'));
+        return;
+      }
+      list = all.filter(function (x) { return hits.every(function (n) { return hasTrait(x.ch, n); }); });
+      var head2 = el('div', 'head');
+      var tx2 = el('div');
+      tx2.appendChild(el('h2', null, list.length + '人'));
+      var hw = el('div', 'hits');
+      hits.forEach(function (n) { var s = el('span', 'tag hit'); s.appendChild(el('span', null, n)); hw.appendChild(s); });
+      tx2.appendChild(hw);
+      head2.appendChild(tx2);
+      result.appendChild(head2);
+      if (!list.length) result.appendChild(el('p', 'note', '当てはまるキャラはいません。選択を減らしてみてください。'));
+    }
+
+    if (list.length) {
+      var ul = el('ul', 'grid');
+      list.forEach(function (x) { ul.appendChild(card(x, hits)); });
+      result.appendChild(ul);
+    }
+  }
+
+  function render() {
+    $('mode-attr').setAttribute('aria-pressed', state.mode === 'attr');
+    $('mode-trait').setAttribute('aria-pressed', state.mode === 'trait');
+    renderPanel();
+    renderResult();
+  }
+
+  $('mode-attr').addEventListener('click', function () { state.mode = 'attr'; state.traits = []; render(); });
+  $('mode-trait').addEventListener('click', function () { state.mode = 'trait'; state.attr = 'all'; render(); });
+  render();
+})();
+</script>
