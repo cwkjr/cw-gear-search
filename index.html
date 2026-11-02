@@ -44,75 +44,75 @@ body {
   background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; line-height: 1.5;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 18px 40px;
+  padding-block: 10px 28px;
 }
-.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-h1 { margin: 0; font-size: 22px; font-weight: 900; letter-spacing: .02em; }
-.sub { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+h1 { margin: 0; font-size: 17px; font-weight: 900; letter-spacing: .02em; }
 
-.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; background: var(--chip); border-radius: 12px; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px; background: var(--chip); border-radius: 10px; }
 .seg button {
-  font: inherit; font-weight: 700; font-size: 15px; padding: 11px 8px; border: 0; border-radius: 9px;
-  background: transparent; color: var(--muted); cursor: pointer; min-height: 44px;
+  font: inherit; font-weight: 700; font-size: 14px; padding: 8px 6px; border: 0; border-radius: 8px;
+  background: transparent; color: var(--muted); cursor: pointer; min-height: 40px;
 }
 .seg button[aria-pressed="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
 
-.panel { display: flex; flex-direction: column; gap: 12px; }
-.group-title { margin: 0 0 6px; font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .08em; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.panel { display: flex; flex-direction: column; gap: 8px; }
+.group-title { margin: 0 0 4px; font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .08em; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
-  font: inherit; font-size: 14px; font-weight: 500; padding: 8px 12px; min-height: 40px; border-radius: 999px;
+  font: inherit; font-size: 13px; font-weight: 500; padding: 5px 10px; min-height: 36px; border-radius: 999px;
   border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer;
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center; gap: 4px;
 }
-.chip .n { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.chip .n { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 700; }
 .chip[aria-pressed="true"] .n { color: inherit; opacity: .8; }
 .chip.empty { opacity: .55; }
 button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
 
-.tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; min-height: 40px; }
-.toggle input { width: 20px; height: 20px; accent-color: var(--accent); }
-.clear { font: inherit; font-size: 14px; background: none; border: 0; color: var(--accent); font-weight: 700; padding: 8px; cursor: pointer; min-height: 40px; }
+.tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; min-height: 36px; }
+.toggle input { width: 18px; height: 18px; accent-color: var(--accent); }
+.tools-r { display: flex; align-items: center; gap: 4px; }
+.clear { font: inherit; font-size: 13px; background: none; border: 0; color: var(--accent); font-weight: 700; padding: 6px; cursor: pointer; min-height: 36px; }
 
 .head {
-  display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--line);
-  border-radius: 14px; padding: 12px;
+  display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 12px; padding: 8px;
 }
-.head .br { width: 112px; flex: none; aspect-ratio: 270/204; border-radius: 10px; background: var(--img-bg); overflow: hidden; display: grid; place-items: center; }
+.head .br { width: 84px; flex: none; aspect-ratio: 270/204; border-radius: 8px; background: var(--img-bg); overflow: hidden; display: grid; place-items: center; }
 .head .br img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.head .br span { font-size: 11px; color: #7a6a52; text-align: center; padding: 4px; }
-.head h2 { margin: 0; font-size: 20px; font-weight: 900; }
-.head p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
-.head .hits { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-.note { margin: 0; padding: 22px 16px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 14px; font-size: 14px; }
+.head .br span { font-size: 10px; color: #7a6a52; text-align: center; padding: 3px; line-height: 1.3; }
+.head h2 { margin: 0; font-size: 16px; font-weight: 900; }
+.head p { margin: 0; color: var(--muted); font-size: 13px; }
+.head .hits { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.note { margin: 0; padding: 16px 12px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 12px; font-size: 13px; }
 
-.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; list-style: none; margin: 0; padding: 0; }
-@media (min-width: 560px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 720px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.card .pic { aspect-ratio: 1; border-radius: 10px; background: var(--img-bg); overflow: hidden; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; list-style: none; margin: 0; padding: 0; }
+@media (min-width: 560px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; } }
+@media (min-width: 720px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 5px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.card .pic { aspect-ratio: 1; border-radius: 7px; background: var(--img-bg); overflow: hidden; }
 .card .pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.card .who { margin: 0; font-size: 12px; color: var(--muted); padding: 0 2px; }
-.tags { display: flex; flex-direction: column; gap: 4px; margin-top: auto; }
+.card .who { margin: 0; font-size: 10.5px; color: var(--muted); padding: 0 2px; line-height: 1.2; }
+.tags { display: flex; flex-direction: column; gap: 3px; margin-top: auto; }
 .tag {
-  display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 7px;
-  font-size: 13px; font-weight: 500; background: var(--tag1); color: var(--tag1-fg); min-width: 0;
+  display: flex; justify-content: space-between; align-items: center; gap: 3px; padding: 3px 6px; border-radius: 5px;
+  font-size: 11.5px; line-height: 1.3; font-weight: 500; background: var(--tag1); color: var(--tag1-fg); min-width: 0; white-space: nowrap;
 }
-.tag .r { font-size: 14px; flex: none; }
+.tag .r { font-size: 12px; flex: none; }
 .tag.r2 { background: var(--tag2); color: var(--tag2-fg); }
+.tag.r1 .r { font-size: 9px; }
 .tag.hit { background: var(--hit); color: var(--hit-fg); font-weight: 700; }
 .tag.none { background: transparent; color: var(--muted); border: 1px dashed var(--line); justify-content: center; }
-.head .tag { display: inline-flex; padding: 3px 9px; }
-.count { margin: 0; font-size: 13px; color: var(--muted); }
+.head .tag { display: inline-flex; padding: 2px 8px; font-size: 12px; }
+.count { margin: 0; font-size: 12px; color: var(--muted); }
 @media (prefers-reduced-motion: no-preference) { .chip, .seg button { transition: background .12s, color .12s; } }
 </style>
 
 <main class="wrap">
   <header>
     <h1>腕輪キャラ検索</h1>
-    <p class="sub">属性か特性のどちらかで絞り込みます</p>
   </header>
 
   <div class="seg" role="group" aria-label="絞り込みの方法">
@@ -133,11 +133,10 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
   var GROUPS = [
     { title: '対〇〇', test: function (n) { return n.indexOf('対') === 0; } },
     { title: '武器・装備', test: function (n) { return ['剣','双剣','大剣','刀','槍','盾槍','盾剣','斧','槌','弓','大砲','双砲','爆弾','爪','腕甲'].indexOf(n) >= 0; } },
-    { title: '魔法・回復', test: function (n) { return n === '攻撃魔法' || n === '回復'; } },
-    { title: 'その他', test: function () { return true; } }
+    { title: '魔法・その他', test: function () { return true; } }
   ];
 
-  var state = { mode: 'attr', attr: 'all', traits: [], only2: false };
+  var state = { mode: 'attr', attr: 'all', traits: [], only2: false, open: true };
   var all = [];
   DATA.forEach(function (a) { a.characters.forEach(function (c) { all.push({ attr: a, ch: c }); }); });
 
@@ -192,6 +191,28 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
       return;
     }
     var names = allTraitNames();
+    var tools = el('div', 'tools');
+    var lab = el('label', 'toggle');
+    var cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.id = 'only2'; cb.checked = state.only2;
+    cb.addEventListener('change', function () { state.only2 = cb.checked; render(); });
+    lab.appendChild(cb); lab.appendChild(document.createTextNode('◎のものだけ'));
+    tools.appendChild(lab);
+    var right = el('div', 'tools-r');
+    if (state.traits.length) {
+      var cl = el('button', 'clear', 'クリア');
+      cl.type = 'button';
+      cl.addEventListener('click', function () { state.traits = []; render(); });
+      right.appendChild(cl);
+    }
+    var op = el('button', 'clear', state.open ? '選択欄を閉じる ▲' : '特性を選ぶ ▼');
+    op.type = 'button';
+    op.setAttribute('aria-expanded', state.open ? 'true' : 'false');
+    op.addEventListener('click', function () { state.open = !state.open; render(); });
+    right.appendChild(op);
+    tools.appendChild(right);
+    panel.appendChild(tools);
+    if (!state.open) return;
     GROUPS.forEach(function (g, gi) {
       var list = names.filter(function (n) {
         for (var i = 0; i < gi; i++) if (GROUPS[i].test(n)) return false;
@@ -211,20 +232,6 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
       box.appendChild(chips);
       panel.appendChild(box);
     });
-    var tools = el('div', 'tools');
-    var lab = el('label', 'toggle');
-    var cb = document.createElement('input');
-    cb.type = 'checkbox'; cb.id = 'only2'; cb.checked = state.only2;
-    cb.addEventListener('change', function () { state.only2 = cb.checked; render(); });
-    lab.appendChild(cb); lab.appendChild(document.createTextNode('◎のものだけ'));
-    tools.appendChild(lab);
-    if (state.traits.length) {
-      var cl = el('button', 'clear', '選択をクリア');
-      cl.type = 'button';
-      cl.addEventListener('click', function () { state.traits = []; render(); });
-      tools.appendChild(cl);
-    }
-    panel.appendChild(tools);
   }
 
   function tagEl(t, hit) {
@@ -241,7 +248,7 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
     img.src = x.ch.img; img.alt = x.attr.name + 'のキャラ'; img.loading = 'lazy';
     pic.appendChild(img);
     li.appendChild(pic);
-    li.appendChild(el('p', 'who', x.attr.name));
+    if (!(state.mode === 'attr' && state.attr !== 'all')) li.appendChild(el('p', 'who', x.attr.name));
     var tags = el('div', 'tags');
     if (!x.ch.traits.length) tags.appendChild(el('span', 'tag none', '特性なし'));
     x.ch.traits.forEach(function (t) {
@@ -268,7 +275,7 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
         } else br.appendChild(el('span', null, '腕輪の画像はまだありません'));
         head.appendChild(br);
         var tx = el('div');
-        tx.appendChild(el('h2', null, a.name + '用の腕輪'));
+        tx.appendChild(el('h2', null, a.name + '用'));
         tx.appendChild(el('p', null, list.length + '人'));
         head.appendChild(tx);
         result.appendChild(head);
@@ -310,7 +317,7 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
   }
 
   $('mode-attr').addEventListener('click', function () { state.mode = 'attr'; state.traits = []; render(); });
-  $('mode-trait').addEventListener('click', function () { state.mode = 'trait'; state.attr = 'all'; render(); });
+  $('mode-trait').addEventListener('click', function () { state.mode = 'trait'; state.attr = 'all'; state.open = true; render(); });
   render();
 })();
 </script>
