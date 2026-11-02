@@ -195,12 +195,7 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
     }
     var names = allTraitNames();
     var tools = el('div', 'tools');
-    var lab = el('label', 'toggle');
-    var cb = document.createElement('input');
-    cb.type = 'checkbox'; cb.id = 'only2'; cb.checked = state.only2;
-    cb.addEventListener('change', function () { state.only2 = cb.checked; render(); });
-    lab.appendChild(cb); lab.appendChild(document.createTextNode('◎のものだけ'));
-    tools.appendChild(lab);
+    .tools { justify-content: flex-end; }
     var right = el('div', 'tools-r');
     if (state.traits.length) {
       var cl = el('button', 'clear', 'クリア');
