@@ -932,18 +932,5 @@ window.WEAPON_DATA = [
     "img": "img/weapons/king7.png"
    }
   ]
- },
- {
-  "id": "hair",
-  "name": "毛",
-  "rings": [
-   "img/elements/hair_b1.png",
-   "img/elements/hair_b2.png"
-  ],
-  "weapons": [
-   {
-    "img": "img/weapons/hair1.png"
-   }
-  ]
  }
 ];
