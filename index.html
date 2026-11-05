@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="属性や特性でキャラを絞り込める検索ページ">
 <meta property="og:type" content="website">
-<meta property="og:title" content="CW-検索">
+<meta property="og:title" content="CW-検索-毛">
 <meta property="og:description" content="属性や特性でキャラを絞り込める検索ページ">
 <meta name="twitter:card" content="summary">
-<title>CW-検索</title>
+<title>CW-検索-毛</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
@@ -58,9 +58,9 @@ body {
 .wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
 h1 { margin: 0; font-size: 17px; font-weight: 900; letter-spacing: .02em; }
 
-.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px; background: var(--chip); border-radius: 10px; }
+.seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; padding: 3px; background: var(--chip); border-radius: 10px; }
 .seg button {
-  font: inherit; font-weight: 700; font-size: 14px; padding: 8px 6px; border: 0; border-radius: 8px;
+  font: inherit; font-weight: 700; font-size: 13px; padding: 8px 2px; white-space: nowrap; border: 0; border-radius: 8px;
   background: transparent; color: var(--muted); cursor: pointer; min-height: 40px;
 }
 .seg button[aria-pressed="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
@@ -89,6 +89,8 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
   display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line);
   border-radius: 12px; padding: 8px;
 }
+.rings { display: flex; gap: 6px; flex: none; }
+.rings img { width: 54px; height: 52px; border-radius: 12px; display: block; }
 .head .br { width: 84px; flex: none; aspect-ratio: 270/204; border-radius: 8px; background: var(--img-bg); overflow: hidden; display: grid; place-items: center; }
 .head .br img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .head .br span { font-size: 10px; color: #7a6a52; text-align: center; padding: 3px; line-height: 1.3; }
@@ -123,12 +125,13 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
 <body>
 <main class="wrap">
   <header>
-    <h1>CW-検索</h1>
+    <h1>CW-検索-毛</h1>
   </header>
 
   <div class="seg" role="group" aria-label="絞り込みの方法">
     <button type="button" id="mode-attr" aria-pressed="true">属性で絞る</button>
     <button type="button" id="mode-trait" aria-pressed="false">特性で絞る</button>
+    <button type="button" id="mode-weapon" aria-pressed="false">武器属性で絞る</button>
   </div>
 
   <section class="panel" id="panel" aria-live="polite"></section>
@@ -139,6 +142,7 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
 <script>
 (function () {
   var DATA = window.GEAR_DATA || [];
+  var WEAPONS = window.WEAPON_DATA || [];
   var RANK = { 2: '◎', 1: '◯' };
   var ORDER = ['剣','双剣','大剣','刀','槍','盾槍','盾剣','斧','槌','弓','大砲','双砲','爆弾','爪','腕甲','攻撃魔法','回復','塩パン','チケ','お金'];
   var GROUPS = [
@@ -147,7 +151,7 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
     { title: '魔法・その他', test: function () { return true; } }
   ];
 
-  var state = { mode: 'attr', attr: 'all', traits: [], only2: false, open: true };
+  var state = { mode: 'attr', el: 'fire', attr: 'all', traits: [], only2: false, open: true };
   var all = [];
   DATA.forEach(function (a) { a.characters.forEach(function (c) { all.push({ attr: a, ch: c }); }); });
 
@@ -192,6 +196,14 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
 
   function renderPanel() {
     panel.textContent = '';
+    if (state.mode === 'weapon') {
+      var wc = el('div', 'chips');
+      WEAPONS.forEach(function (e) {
+        wc.appendChild(chip(e.name, e.weapons.length, state.el === e.id, function () { state.el = e.id; render(); }));
+      });
+      panel.appendChild(wc);
+      return;
+    }
     if (state.mode === 'attr') {
       var chips = el('div', 'chips');
       chips.appendChild(chip('すべて', all.length, state.attr === 'all', function () { state.attr = 'all'; render(); }));
@@ -265,6 +277,38 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
 
   function renderResult() {
     result.textContent = '';
+    if (state.mode === 'weapon') {
+      var w = WEAPONS.filter(function (e) { return e.id === state.el; })[0];
+      if (!w) return;
+      var wh = el('div', 'head');
+      var rings = el('div', 'rings');
+      w.rings.forEach(function (src) {
+        var ri = document.createElement('img');
+        ri.src = src; ri.alt = w.name + 'の腕輪';
+        rings.appendChild(ri);
+      });
+      wh.appendChild(rings);
+      var wt = el('div');
+      wt.appendChild(el('h2', null, w.name + '属性'));
+      wt.appendChild(el('p', null, w.weapons.length + '個'));
+      wh.appendChild(wt);
+      result.appendChild(wh);
+      var wl = el('ul', 'grid');
+      w.weapons.forEach(function (x) {
+        var li = el('li', 'card');
+        var pic = el('div', 'pic');
+        var im = document.createElement('img');
+        im.src = x.img; im.alt = w.name + '属性の武器'; im.loading = 'lazy';
+        pic.appendChild(im); li.appendChild(pic);
+        if (x.also) {
+          var o = WEAPONS.filter(function (e) { return e.id === x.also; })[0];
+          if (o) li.appendChild(el('p', 'who', o.name + 'も持つ'));
+        }
+        wl.appendChild(li);
+      });
+      result.appendChild(wl);
+      return;
+    }
     var list = [], hits = [];
 
     if (state.mode === 'attr') {
@@ -317,12 +361,14 @@ button:focus-visible { outline: 3px solid var(--hit); outline-offset: 2px; }
   function render() {
     $('mode-attr').setAttribute('aria-pressed', state.mode === 'attr');
     $('mode-trait').setAttribute('aria-pressed', state.mode === 'trait');
+    $('mode-weapon').setAttribute('aria-pressed', state.mode === 'weapon');
     renderPanel();
     renderResult();
   }
 
   $('mode-attr').addEventListener('click', function () { state.mode = 'attr'; state.traits = []; render(); });
   $('mode-trait').addEventListener('click', function () { state.mode = 'trait'; state.attr = 'all'; state.open = true; render(); });
+  $('mode-weapon').addEventListener('click', function () { state.mode = 'weapon'; state.traits = []; render(); });
   render();
 })();
 </script>

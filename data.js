@@ -765,3 +765,185 @@ window.GEAR_DATA = [
   ]
  }
 ];
+
+// 武器属性のデータ。also は、2つ目の属性を持つ武器に付ける印です。
+window.WEAPON_DATA = [
+ {
+  "id": "fire",
+  "name": "炎",
+  "rings": [
+   "img/elements/fire_b1.png",
+   "img/elements/fire_b2.png"
+  ],
+  "weapons": [
+   {
+    "img": "img/weapons/fire1.png"
+   },
+   {
+    "img": "img/weapons/fire2.png"
+   },
+   {
+    "img": "img/weapons/fire3.png"
+   },
+   {
+    "img": "img/weapons/fire4.png",
+    "also": "ice"
+   },
+   {
+    "img": "img/weapons/fire5.png"
+   },
+   {
+    "img": "img/weapons/fire6.png"
+   },
+   {
+    "img": "img/weapons/fire7.png"
+   },
+   {
+    "img": "img/weapons/fire8.png"
+   },
+   {
+    "img": "img/weapons/fire9.png"
+   },
+   {
+    "img": "img/weapons/fire10.png"
+   },
+   {
+    "img": "img/weapons/fire11.png"
+   }
+  ]
+ },
+ {
+  "id": "ice",
+  "name": "氷",
+  "rings": [
+   "img/elements/ice_b1.png",
+   "img/elements/ice_b2.png"
+  ],
+  "weapons": [
+   {
+    "img": "img/weapons/ice1.png"
+   },
+   {
+    "img": "img/weapons/ice2.png"
+   },
+   {
+    "img": "img/weapons/ice3.png",
+    "also": "fire"
+   },
+   {
+    "img": "img/weapons/ice4.png"
+   },
+   {
+    "img": "img/weapons/ice5.png"
+   }
+  ]
+ },
+ {
+  "id": "holy",
+  "name": "聖",
+  "rings": [
+   "img/elements/holy_b1.png",
+   "img/elements/holy_b2.png"
+  ],
+  "weapons": [
+   {
+    "img": "img/weapons/holy1.png"
+   },
+   {
+    "img": "img/weapons/holy2.png"
+   },
+   {
+    "img": "img/weapons/holy3.png"
+   },
+   {
+    "img": "img/weapons/holy4.png",
+    "also": "king"
+   },
+   {
+    "img": "img/weapons/holy5.png"
+   },
+   {
+    "img": "img/weapons/holy6.png"
+   },
+   {
+    "img": "img/weapons/holy7.png"
+   },
+   {
+    "img": "img/weapons/holy8.png"
+   },
+   {
+    "img": "img/weapons/holy9.png"
+   }
+  ]
+ },
+ {
+  "id": "dark",
+  "name": "魔",
+  "rings": [
+   "img/elements/dark_b1.png",
+   "img/elements/dark_b2.png"
+  ],
+  "weapons": [
+   {
+    "img": "img/weapons/dark1.png"
+   },
+   {
+    "img": "img/weapons/dark2.png"
+   },
+   {
+    "img": "img/weapons/dark3.png"
+   },
+   {
+    "img": "img/weapons/dark4.png"
+   },
+   {
+    "img": "img/weapons/dark5.png"
+   }
+  ]
+ },
+ {
+  "id": "king",
+  "name": "王",
+  "rings": [
+   "img/elements/king_b1.png",
+   "img/elements/king_b2.png"
+  ],
+  "weapons": [
+   {
+    "img": "img/weapons/king1.png"
+   },
+   {
+    "img": "img/weapons/king2.png"
+   },
+   {
+    "img": "img/weapons/king3.png",
+    "also": "holy"
+   },
+   {
+    "img": "img/weapons/king4.png"
+   },
+   {
+    "img": "img/weapons/king5.png"
+   },
+   {
+    "img": "img/weapons/king6.png"
+   },
+   {
+    "img": "img/weapons/king7.png"
+   }
+  ]
+ },
+ {
+  "id": "hair",
+  "name": "毛",
+  "rings": [
+   "img/elements/hair_b1.png",
+   "img/elements/hair_b2.png"
+  ],
+  "weapons": [
+   {
+    "img": "img/weapons/hair1.png"
+   }
+  ]
+ }
+];
